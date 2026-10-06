@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/* Modo oscuro basado en la clase .dark en <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.25s ease-out;
+  --animate-toast-in: toast-in 0.25s ease-out;
+
+  /* ============================================================
+     SISTEMA DE COLOR — grafito + índigo + estados calmados
+     Paleta de bajo croma pensada para sesiones largas: sin
+     saturación que canse la vista. Los acentos (500/600) se usan
+     con texto blanco y pasan >= 4.5:1.
+
+     Regla de uso en cada familia:
+       50/100  -> fondo suave de tarjeta (texto oscuro 800)
+       400     -> acento en modo oscuro
+       500/600 -> RELLENO SÓLIDO (calendario), texto blanco
+       800     -> texto sobre fondo suave en claro
+       950     -> fondo de tarjeta en modo oscuro (sólido, opaco)
+     ============================================================ */
+
+  /* Superficies y neutros fríos */
+  --color-surface-50: #f8fafc;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-300: #cbd5e1;
+  --color-surface-400: #94a3b8;
+  --color-surface-500: #64748b;
+
+  /* Texto */
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
+
+  /* Marca: índigo calmado — 500 con blanco (6.85:1) */
+  --color-brand-50: #f4f4fd;
+  --color-brand-100: #ecebfb;
+  --color-brand-200: #d8d7f5;
+  --color-brand-300: #b9b8ea;
+  --color-brand-400: #5f5ed4;
+  --color-brand-500: #4c4bbf;
+  --color-brand-600: #3f3ea0;
+  --color-brand-700: #343382;
+  --color-brand-800: #26255e;
+  --color-brand-900: #1a1946;
+  --color-brand-950: #1c1b3f;
+
+  /* Comida de casa — verde pino (antes esmeralda saturada) */
+  --color-home-50: #f2f7f5;
+  --color-home-100: #e9f2ef;
+  --color-home-200: #cfe3dd;
+  --color-home-300: #a8cec4;
+  --color-home-400: #4c8a78;
+  --color-home-500: #35705f;
+  --color-home-600: #2b5c4e;
+  --color-home-700: #224a3f;
+  --color-home-800: #1b3d34;
+  --color-home-900: #12302a;
+  --color-home-950: #16302b;
+
+  /* Comedor — ocre (antes ámbar saturado) */
+  --color-school-50: #faf6ec;
+  --color-school-100: #f7f1e0;
+  --color-school-200: #ece0c2;
+  --color-school-300: #ddc98f;
+  --color-school-400: #9a7a1c;
+  --color-school-500: #7d6214;
+  --color-school-600: #66500f;
+  --color-school-700: #4f3e0c;
+  --color-school-800: #463612;
+  --color-school-900: #2f2408;
+  --color-school-950: #2b2410;
+
+  /* Ausencia — rojo ladrillo (rojo, pero sin gritar) */
+  --color-absent-50: #fbf3f3;
+  --color-absent-100: #f7eaea;
+  --color-absent-200: #ecd0d0;
+  --color-absent-300: #dba8a8;
+  --color-absent-400: #b85050;
+  --color-absent-500: #a33a3a;
+  --color-absent-600: #8a2f2f;
+  --color-absent-700: #712727;
+  --color-absent-800: #5c2222;
+  --color-absent-900: #3d1616;
+  --color-absent-950: #311616;
+
+  /* Sin clases — pizarra (discreto a propósito: no es día de comida) */
+  --color-noclass-50: #f5f6f8;
+  --color-noclass-100: #eef0f3;
+  --color-noclass-200: #dfe3e8;
+  --color-noclass-300: #c3cad3;
+  --color-noclass-400: #6b7684;
+  --color-noclass-500: #55606e;
+  --color-noclass-600: #4b5563;
+  --color-noclass-700: #3d4550;
+  --color-noclass-800: #333b45;
+  --color-noclass-900: #232a33;
+  --color-noclass-950: #1b2330;
+
+  /* Superficies del modo oscuro.
+     Antes eran casi negro (#0b1220, L=0.006) y cansaban la vista. Ahora son
+     azul-grafito más luminosas (L 0.015-0.053): el modo oscuro ya no se siente
+     negro absoluto. El texto claro conserva 13.8:1 sobre el fondo. */
+  --color-night-700: #33425a;
+  --color-night-800: #283449;
+  --color-night-900: #1f2a3c;
+  --color-night-950: #172033;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-0.75rem) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  /* Piso de altura de cada fila del calendario. Debe coincidir con el
+     min-height de DayCell para que las celdas nunca se encimen. */
+  --cal-row: 2.25rem;
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+@media (min-width: 1024px) {
+  html { --cal-row: 3.25rem; }
+}
+
+button {
+  touch-action: manipulation;
+}
+
+body {
+  background-color: var(--color-surface-50);
+  color: var(--color-ink-900);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+.dark body {
+  background-color: var(--color-night-950);
+  color: #e8edf5;
+}
+
+/* ---------- Un solo color por estado ----------
+   Las tarjetas usan EXACTAMENTE el mismo relleno sólido que las celdas del
+   calendario. Antes cada estado tenía dos tonos (tinte suave en la tarjeta +
+   sólido en la celda), lo que hacía parecer que había el doble de colores. */
+
+/* ---------- Fila de KPIs ----------
+   Las tarjetas son el resumen, no el protagonista: se compactan para ceder
+   espacio y peso visual al calendario, que es donde se trabaja. */
+.kpi-strip {
+  height: 76px;
+}
+@media (max-height: 700px) {
+  .kpi-strip { height: 62px; }
+}
+@media (min-width: 1024px) {
+  .kpi-strip {
+    height: 100%;
+    /* Total (alto natural), 4 estados repartiéndose el medio en dos filas
+       iguales, y "Pagados" a lo ancho abajo. Así la columna izquierda queda
+       pareja con el calendario y no sobra hueco. */
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr) auto;
+  }
+  /* El número crece con la altura disponible: en pantallas altas las tarjetas
+     se llenan en vez de quedar con aire de más. */
+  .kpi-num { font-size: 2.25rem; line-height: 1; }
+  .kpi-icon { width: 1.5rem; height: 1.5rem; }
+}
+@media (min-width: 1024px) and (min-height: 900px) {
+  .kpi-num { font-size: 3rem; }
+  .kpi-icon { width: 1.75rem; height: 1.75rem; }
+}
+@media (min-width: 1024px) and (min-height: 1050px) {
+  .kpi-num { font-size: 3.75rem; }
+  .kpi-icon { width: 2rem; height: 2rem; }
+}
+
+/* ---------- Leyenda del calendario ----------
+   En pantallas bajas se oculta: los estados ya se distinguen por color,
+   ícono y forma en cada celda, y así el botón de liquidar no queda fuera. */
+@media (max-height: 700px) {
+  .cal-legend { display: none; }
+}
+
+/* ---------- Layout de escritorio ----------
+   En pantallas grandes el dashboard pasa a dos columnas:
+   barra lateral (mes + KPIs + liquidar) y calendario amplio a la derecha.
+   En móvil sigue siendo una sola columna sin scroll. */
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    /* La columna izquierda se reparte toda la altura: nav arriba, KPIs que
+       estiran para llenar, y el botón de liquidar al fondo. Sin huecos. */
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'nav    cal'
+      'cards  cal'
+      'settle cal';
+    column-gap: 1.25rem;
+    row-gap: 0.625rem;
+  }
+  .dg-nav    { grid-area: nav; }
+  .dg-cards  { grid-area: cards; min-height: 0; }
+  .dg-settle { grid-area: settle; }
+  .dg-cal    { grid-area: cal; min-height: 0; }
+}
