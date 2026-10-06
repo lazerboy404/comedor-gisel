@@ -33,7 +33,7 @@ export default function Dashboard({ month, onMonthChange }) {
         <MonthCalendar month={month} />
       </div>
       <div className="dg-settle min-h-0">
-        <SettleCycle month={month} stats={stats} loading={loading} />
+        <SettleCycle month={month} price={price} loading={loading} />
       </div>
     </section>
   )

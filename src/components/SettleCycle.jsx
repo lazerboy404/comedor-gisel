@@ -9,7 +9,7 @@ import Modal from './Modal'
 import { Spinner } from './Loader'
 
 /** Botón + confirmación de "Liquidar ciclo" (marca los días como paid) */
-export default function SettleCycle({ month, stats, loading }) {
+export default function SettleCycle({ month, price, loading }) {
   const { meals, settleMonth } = useMealsData()
   const toast = useToast()
   const [open, setOpen] = useState(false)
@@ -17,7 +17,9 @@ export default function SettleCycle({ month, stats, loading }) {
 
   const key = monthKey(month)
   const pending = useMemo(() => pendingDaysOfMonth(meals, key), [meals, key])
-  const total = pending.length * stats.price
+  // El precio viene del contexto (prop `price`): `stats` no trae un campo price,
+  // así que usar stats.price daba NaN y el total se mostraba como $0.00.
+  const total = pending.length * price
 
   async function handleConfirm() {
     setBusy(true)
@@ -61,7 +63,7 @@ export default function SettleCycle({ month, stats, loading }) {
             {pending.map((k) => (
               <li key={k} className="flex items-center justify-between gap-2 text-ink-800 dark:text-white/70">
                 <span className="capitalize">{formatShortDate(k)}</span>
-                <span className="font-semibold tabular-nums">{formatMoney(stats.price)}</span>
+                <span className="font-semibold tabular-nums">{formatMoney(price)}</span>
               </li>
             ))}
           </ul>
