@@ -12,6 +12,9 @@ dev-dist
 # Vercel
 .vercel
 
+# Perch (índice interno del workspace: cambia solo y ensucia los commits)
+.perch/
+
 # Sistema
 .DS_Store
 Thumbs.db
