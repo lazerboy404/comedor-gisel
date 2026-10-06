@@ -65,11 +65,12 @@ npm install
 
 ## 3) Cómo se usa
 
-- **Inicio (dashboard principal)**: **una sola pantalla sin scroll** — KPIs compactos arriba (total a pagar + días de comedor, casa y ausencias) y el **calendario interactivo** que se expande para llenar el espacio; al marcar un día, el total se actualiza al instante. Incluye el botón de **liquidar ciclo**. El **precio por comida** se ajusta en el engranaje del encabezado.
+- **Inicio (dashboard principal)**: **una sola pantalla sin scroll** — KPIs compactos arriba (total a pagar + días de comedor, comida de casa, ausencias, sin clases y días ya pagados) y el **calendario interactivo** que se expande para llenar el espacio; al marcar un día, el total se actualiza al instante. Incluye el botón de **liquidar ciclo**. El **precio por comida** se ajusta en el engranaje del encabezado.
 - **Calendario** (dentro de Inicio): al tocar/clic un día se abren sus opciones:
-  - 🔵 **Casa** (azul pastel) — llevó comida de casa ($0)
-  - 🟠 **Comedor** (naranja pastel) — comió en la escuela (suma al total)
-  - ⚪ **Ausencia** (gris pastel) — no aplica
+  - **Comida de casa** (verde pino) — llevó comida de casa ($0)
+  - **Comedor** (ocre) — comió en la escuela (suma al pago)
+  - **Ausencia** (rojo ladrillo) — no aplica
+  - **Sin clases** (pizarra, con borde discontinuo) — festivo o suspensión
   - **Sin marca** — limpia el día
   - En el mismo panel puedes escribir una **nota opcional** (qué llevó de comer) y, si es día de comedor, marcarlo como **ya pagado**.
 - **Rangos de días**: arrastra sobre varios días (o mantén presionado y desliza) para aplicar el mismo estado a toda una semana de corrido; los fines de semana se ignoran y se conservan notas e historial de pagos.
@@ -147,9 +148,9 @@ users/{uid}
   createdAt: timestamp
 
   meals/{YYYY-MM-DD}          // un documento por día
-    status: "home" | "school" | "absent"
+    status: "home" | "school" | "absent" | "noclass"
     note: string               // opcional — qué llevó de comer
-    paid: boolean              // true tras "Liquidar ciclo"
+    paid: boolean              // true tras "Liquidar ciclo" o marcar el día
     updatedAt: timestamp
     paidAt: timestamp | null   // historial de liquidación
 ```
@@ -166,6 +167,7 @@ users/{uid}
 
 ## Notas de diseño
 
+- **Paleta calmada**: un solo color por estado (los mismos tonos en las tarjetas y en el calendario): verde pino para comida de casa, ocre para comedor, rojo ladrillo para ausencia y pizarra para sin clases. El pago se indica con el ícono de billete, no cambiando el color del día. Modo claro y oscuro con contrastes verificados ≥ 4.5:1.
 - **Actualizaciones optimistas**: al tocar un día, la UI cambia al instante; Firestore sincroniza en segundo plano (si no hay internet, los cambios se guardan en el dispositivo y se suben solos al reconectar — verás el aviso "Guardando cambios en la nube…").
 - **Multi-dispositivo**: inicia sesión con la misma cuenta de Google en cualquier dispositivo y verás los mismos datos en tiempo real.
 - **Privacidad**: las reglas de Firestore restringen todo a tu cuenta.
