@@ -24,34 +24,34 @@ export default function MonthCalendar({ month }) {
   const [range, setRange] = useState(null) // opciones de un RANGO { from, to }
   const [highlight, setHighlight] = useState(null) // { from, to } mientras se arrastra
   const pressRef = useRef(null)
-  const ghostRef = useRef(null) // clic fantasma a descartar { x, y, until }
+  const ghostUntilRef = useRef(0) // hasta cuándo descartar el próximo clic
 
   /*
    * El modal se abre al soltar el dedo (pointerup), pero el navegador emite un
-   * 'click' DESPUÉS, en las MISMAS coordenadas. Como el modal ya está montado
-   * encima, ese clic caía sobre un botón del modal: pintaba otro estado y, si
-   * caía en "Comida de casa", ocultaba el interruptor de pagado.
-   * Solo pasa con toque real (con ratón el click llega antes de que React monte
-   * el modal), por eso solo se veía en el celular. Aquí se descarta ese clic
-   * exacto: misma posición (tolerancia 2px) y dentro de una ventana corta.
+   * 'click' DESPUÉS, en (casi) las mismas coordenadas. Como el modal ya está
+   * montado encima, ese clic caía sobre un botón del modal: pintaba otro estado
+   * y, si caía en "Comida de casa", ocultaba el interruptor de pagado.
+   *
+   * Solo pasa con toque real (con ratón el click llega antes de montar el modal).
+   * Nota: NO se compara por posición. El navegador ajusta el punto del clic
+   * sintetizado al elemento tocable más cercano, así que puede caer a varios px
+   * (medido: 4-5 px, y más en pantallas reales) y una tolerancia fina lo deja
+   * pasar. Se descarta el SIGUIENTE clic, una sola vez, dentro de una ventana
+   * corta. Se arma solo para touch/pen, nunca para ratón, para no tragarse un
+   * clic legítimo en escritorio.
    */
-  function armGhostGuard(x, y) {
-    ghostRef.current = { x, y, until: Date.now() + 400 }
+  function armGhostGuard() {
+    ghostUntilRef.current = Date.now() + 500
   }
 
   useEffect(() => {
     function onDocClick(e) {
-      const g = ghostRef.current
-      if (!g) return
-      if (Date.now() > g.until) {
-        ghostRef.current = null
-        return
-      }
-      if (Math.abs(e.clientX - g.x) <= 2 && Math.abs(e.clientY - g.y) <= 2) {
-        e.stopPropagation()
-        e.preventDefault()
-        ghostRef.current = null
-      }
+      const until = ghostUntilRef.current
+      if (!until) return
+      ghostUntilRef.current = 0 // una sola vez
+      if (Date.now() > until) return
+      e.stopPropagation()
+      e.preventDefault()
     }
     // En captura: corre ANTES de que React vea el evento, así no llega al botón
     document.addEventListener('click', onDocClick, true)
@@ -66,7 +66,15 @@ export default function MonthCalendar({ month }) {
 
   function handleDayPointerDown(key, e) {
     if (e.button != null && e.button !== 0) return // clic derecho se maneja aparte
-    pressRef.current = { key, x: e.clientX, y: e.clientY, moved: false, hoverKey: null }
+    pressRef.current = {
+      key,
+      x: e.clientX,
+      y: e.clientY,
+      moved: false,
+      hoverKey: null,
+      // Solo el toque sintetiza un clic tardío; con ratón el clic es legítimo
+      touch: e.pointerType === 'touch' || e.pointerType === 'pen',
+    }
   }
 
   useEffect(() => {
@@ -82,20 +90,19 @@ export default function MonthCalendar({ month }) {
       }
     }
 
-    function onUp(e) {
+    function onUp() {
       const p = pressRef.current
       if (!p) return
       pressRef.current = null
       setHighlight(null)
+      const opensModal =
+        p.moved ? !!(p.hoverKey && p.hoverKey !== p.key) : true
+      if (opensModal && p.touch) armGhostGuard()
       if (p.moved) {
         // arrastre: rango si terminó sobre otro día; fuera del calendario = cancelar
-        if (p.hoverKey && p.hoverKey !== p.key) {
-          armGhostGuard(e.clientX, e.clientY)
-          setRange({ from: p.key, to: p.hoverKey })
-        }
+        if (p.hoverKey && p.hoverKey !== p.key) setRange({ from: p.key, to: p.hoverKey })
       } else {
         // toque/clic/mantener presionado sin mover: opciones del día
-        armGhostGuard(e.clientX, e.clientY)
         setDetailKey(p.key)
       }
     }

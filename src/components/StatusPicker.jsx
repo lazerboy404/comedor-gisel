@@ -1,11 +1,12 @@
-import { CalendarOff, CalendarX2, CircleSlash, Home, UtensilsCrossed } from 'lucide-react'
+import { CalendarOff, CircleSlash } from 'lucide-react'
+import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
 import { formatMoney } from '../lib/format'
 import { STATUS } from '../lib/meals'
 
 const OPTIONS = [
-  { value: STATUS.HOME, label: 'Comida de casa', sub: 'Sin costo ($0)', icon: Home },
-  { value: STATUS.SCHOOL, label: 'Comedor', sub: 'Come en la escuela', icon: UtensilsCrossed },
-  { value: STATUS.ABSENT, label: 'Ausencia', sub: 'No aplica', icon: CalendarX2 },
+  { value: STATUS.HOME, label: 'Comida de casa', sub: 'Sin costo ($0)', icon: HomeMeal },
+  { value: STATUS.SCHOOL, label: 'Comedor', sub: 'Come en la escuela', icon: SchoolMeal },
+  { value: STATUS.ABSENT, label: 'Ausencia', sub: 'No aplica', icon: CryingFace },
   { value: STATUS.NO_CLASS, label: 'No hubo clases', sub: 'Festivo o suspensión', icon: CalendarOff },
   { value: null, label: 'Sin marca', sub: 'Borra el estado del día', icon: CircleSlash, action: true },
 ]

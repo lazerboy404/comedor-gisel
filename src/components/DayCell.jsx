@@ -1,4 +1,5 @@
-import { Banknote, CalendarOff, CalendarX2, Home, StickyNote, UtensilsCrossed } from 'lucide-react'
+import { Banknote, CalendarOff, StickyNote } from 'lucide-react'
+import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
 import { formatLongDate, isToday, isWeekend, toKey } from '../lib/dates'
 import { STATUS, STATUS_META } from '../lib/meals'
 
@@ -63,11 +64,11 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
 
   const Icon =
     status === STATUS.HOME
-      ? Home
+      ? HomeMeal
       : status === STATUS.SCHOOL
-        ? UtensilsCrossed
+        ? SchoolMeal
         : status === STATUS.ABSENT
-          ? CalendarX2
+          ? CryingFace
           : status === STATUS.NO_CLASS
             ? CalendarOff
             : null

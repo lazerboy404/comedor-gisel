@@ -1,4 +1,5 @@
-import { Banknote, CalendarOff, CalendarX2, Home, UtensilsCrossed, Wallet } from 'lucide-react'
+import { Banknote, CalendarOff, Wallet } from 'lucide-react'
+import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
 import { formatMoney } from '../lib/format'
 
 function SkeletonCards() {
@@ -27,9 +28,9 @@ function SkeletonCards() {
  * Texto blanco sobre el relleno: 5.78 - 7.56:1 en los cuatro estados.
  */
 const MINIS = [
-  { key: 'school', label: 'Comedor', icon: UtensilsCrossed, fill: 'bg-school-500' },
-  { key: 'home', label: 'Comida de casa', icon: Home, fill: 'bg-home-500' },
-  { key: 'absent', label: 'Ausencia', icon: CalendarX2, fill: 'bg-absent-500' },
+  { key: 'school', label: 'Comedor', icon: SchoolMeal, fill: 'bg-school-500' },
+  { key: 'home', label: 'Comida de casa', icon: HomeMeal, fill: 'bg-home-500' },
+  { key: 'absent', label: 'Ausencia', icon: CryingFace, fill: 'bg-absent-500' },
   { key: 'noClass', label: 'Sin clases', icon: CalendarOff, fill: 'bg-noclass-600' },
 ]
 
