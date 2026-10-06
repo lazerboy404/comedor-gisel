@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
   GoogleAuthProvider,
+  getRedirectResult,
   onAuthStateChanged,
   signInWithPopup,
   signInWithRedirect,
@@ -44,6 +45,14 @@ export function AuthProvider({ children }) {
       setInitializing(false)
       return undefined
     }
+    // Cierra el ciclo del inicio de sesión por REDIRECCIÓN (cuando el navegador
+    // bloquea la ventana emergente, sobre todo en móviles). Sin esto, Google
+    // devuelve al usuario a la app pero nadie lee el resultado, la sesión no se
+    // crea y la persona vuelve a ver la pantalla de login sin ningún error.
+    getRedirectResult(auth).catch((err) => {
+      if (err?.code === 'auth/unauthorized-domain') setError(authErrorToMessage(err))
+      else console.warn('[auth] No se completó el acceso por redirección:', err)
+    })
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser)
       if (firebaseUser) await ensureUserDoc(firebaseUser)
@@ -92,8 +101,11 @@ export function AuthProvider({ children }) {
           setSigningIn(false)
         }
       }
-      // El usuario cerró/canceló la ventana: no mostrar error molesto
-      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return
+      // Si el usuario canceló a propósito, no reclamar. Pero un popup cerrado
+      // sin intervención del usuario (bloqueo o cierre automático) sí debe
+      // avisar y ofrecer la redirección, o el usuario se queda sin saber qué pasó.
+      if (err?.code === 'auth/cancelled-popup-request') return
+      if (err?.code === 'auth/popup-closed-by-user') return
       setError(authErrorToMessage(err))
     } finally {
       setSigningIn(false)
