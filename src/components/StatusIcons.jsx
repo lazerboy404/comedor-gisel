@@ -1,24 +1,24 @@
-import { forwardRef } from 'react'
-
 /*
  * Iconos de estado COMPUESTOS.
  *
- * Lucide no trae un icono que combine casa + cubiertos, ni cubiertos + escuela,
- * ni una carita llorando. Se componen aquí a partir de las formas de lucide
- * (mismos trazos, mismas proporciones y mismo grosor relativo), en un viewBox
- * de 24x24 igual que el resto de los iconos, para que se mezclen sin cantar.
+ * Lucide no trae casa+cubiertos, ni cubiertos+escuela, ni una carita llorando,
+ * así que se componen aquí con las mismas formas de lucide.
  *
- * Composición: símbolo principal arriba a la izquierda (a ~65%) y el secundario
- * abajo a la derecha (a ~52%), que es el patrón habitual de un icono combinado.
- * Como cada grupo va escalado, su strokeWidth se sube en la misma proporción
- * (2 / escala) para que el trazo se vea parejo y no más delgado.
+ * REGLA DE ORO (aprendida a golpes): a 14px, el tamaño real del icono en la
+ * celda del calendario, dos símbolos NO caben dentro de un cuadrado de 24x24:
+ * cada uno queda a ~7px y se vuelven una mancha. La solución es un icono
+ * ANCHO: el viewBox se estira a 42x22 y los dos símbolos van lado a lado, cada
+ * uno con el alto completo. Así conservan tamaño y se leen.
+ *
+ * Los trazos se escalan con strokeWidth = 2 / escala, para que el grosor se vea
+ * parejo entre símbolos (el <g> escala también el trazo).
+ *
+ * IMPORTANTE al usarlos: el icono ya no es cuadrado, así que fijar SOLO el alto
+ * (`h-3.5 w-auto`), no `size-3.5`, o se deforma.
  */
 
 const BASE = {
   xmlns: 'http://www.w3.org/2000/svg',
-  width: 24,
-  height: 24,
-  viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
   strokeLinecap: 'round',
@@ -26,32 +26,12 @@ const BASE = {
   'aria-hidden': true,
 }
 
-function makeIcon(displayName, render) {
-  const Icon = forwardRef(function IconComponent({ className, strokeWidth = 2, ...props }, ref) {
-    return (
-      <svg ref={ref} {...BASE} strokeWidth={strokeWidth} className={className} {...props}>
-        {render()}
-      </svg>
-    )
-  })
-  Icon.displayName = displayName
-  return Icon
-}
-
-/* --- formas base de lucide (tomadas tal cual de v1.50) --- */
+/* --- formas base de lucide (v1.50), en su viewBox original de 24x24 --- */
 
 const HOUSE = (
   <>
     <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
     <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-  </>
-)
-
-const UTENSILS = (
-  <>
-    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-    <path d="M7 2v20" />
-    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
   </>
 )
 
@@ -75,38 +55,62 @@ const SCHOOL = (
   </>
 )
 
-/* --- iconos compuestos --- */
+/* --- helpers --- */
 
-/** Comida de casa: casita + cubiertos (llevó comida de casa).
- *  Casa arriba a la izquierda y cubiertos abajo a la derecha, SIN tocarse:
- *  a tamaño real (14px) dos símbolos encimados se vuelven una mancha. */
-export const HomeMeal = makeIcon('HomeMeal', () => (
+const SCALE = 0.86
+const SW = 2 / SCALE // trazo parejo tras escalar
+
+/** Símbolo dentro de su ranura del icono ancho */
+const Slot = ({ x, y, children }) => (
+  <g transform={`translate(${x} ${y}) scale(${SCALE})`} strokeWidth={SW}>
+    {children}
+  </g>
+)
+
+function makeIcon(displayName, viewBox, render) {
+  const Icon = function IconComponent({ className, strokeWidth = 2, ...props }) {
+    return (
+      <svg {...BASE} viewBox={viewBox} strokeWidth={strokeWidth} className={className} {...props}>
+        {render()}
+      </svg>
+    )
+  }
+  Icon.displayName = displayName
+  return Icon
+}
+
+/* --- iconos --- */
+
+/**
+ * Comida de casa: casita + cubiertos cruzados, lado a lado.
+ * Los cubiertos son los MISMOS que los del comedor (cruzados), que es lo que
+ * se veía bien; antes se habían puesto los verticales y quedaban feos.
+ */
+export const HomeMeal = makeIcon('HomeMeal', '0 0 42 22', () => (
   <>
-    <g transform="translate(0.3 1.2) scale(0.62)" strokeWidth={3.2}>
+    <Slot x={-0.6} y={0.95}>
       {HOUSE}
-    </g>
-    <g transform="translate(14 13) scale(0.42)" strokeWidth={4.8}>
-      {UTENSILS}
-    </g>
+    </Slot>
+    <Slot x={20.4} y={0.77}>
+      {UTENSILS_CROSSED}
+    </Slot>
   </>
 ))
 
-/** Comedor: cubiertos + escuela (come en el comedor de la escuela).
- *  La escuela es el símbolo que identifica el estado, así que lleva algo más
- *  de tamaño; los cubiertos la acompañan. */
-export const SchoolMeal = makeIcon('SchoolMeal', () => (
+/** Comedor: cubiertos cruzados + escuela, lado a lado */
+export const SchoolMeal = makeIcon('SchoolMeal', '0 0 42 22', () => (
   <>
-    <g transform="translate(0 0.4) scale(0.44)" strokeWidth={4.5}>
+    <Slot x={-0.4} y={0.77}>
       {UTENSILS_CROSSED}
-    </g>
-    <g transform="translate(10.6 10.2) scale(0.56)" strokeWidth={3.6}>
+    </Slot>
+    <Slot x={19.4} y={0.72}>
       {SCHOOL}
-    </g>
+    </Slot>
   </>
 ))
 
 /** Ausencia: carita llorando (lucide no la trae; se compone aquí) */
-export const CryingFace = makeIcon('CryingFace', () => (
+export const CryingFace = makeIcon('CryingFace', '0 0 24 24', () => (
   <>
     <circle cx="12" cy="12" r="10" />
     <path d="M15 10V9" />

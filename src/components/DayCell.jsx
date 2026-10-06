@@ -101,7 +101,9 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
       <span className={today ? 'font-extrabold underline decoration-2 underline-offset-[3px]' : undefined}>
         {date.getDate()}
       </span>
-      {Icon && <Icon className="size-3.5 opacity-95 lg:size-4" />}
+      {/* El icono compuesto es más ancho que alto: fijar solo el alto (h-*) y
+            dejar que el ancho siga la proporción, o se deformaría. */}
+        {Icon && <Icon className="h-3.5 w-auto opacity-95 lg:h-4" />}
       {paid && (
         <span
           title="Pagado"

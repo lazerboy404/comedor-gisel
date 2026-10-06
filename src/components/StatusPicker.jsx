@@ -52,7 +52,11 @@ export default function StatusPicker({ value = null, onChange, price }) {
               wide ? 'col-span-2' : ''
             } ${stateClass}`}
           >
-            <o.icon className="size-5" />
+            {/* Contenedor cuadrado con el icono centrado: los compuestos son anchos y
+                no deben estirar la tarjeta ni deformarse. */}
+            <span className="flex h-5 items-center justify-center">
+              <o.icon className="h-4 w-auto" />
+            </span>
             <span className="text-center text-sm font-semibold leading-tight">{o.label}</span>
             <span className={`text-[11px] ${active ? 'text-white/85' : 'opacity-80'}`}>
               {o.value === STATUS.SCHOOL ? `${o.sub} · ${formatMoney(price)}` : o.sub}
