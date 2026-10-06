@@ -8,7 +8,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt': el service worker nuevo espera y la app AVISA que hay
+      // versión nueva (componente UpdatePrompt). Con 'autoUpdate' el cambio
+      // entra en silencio y se sigue viendo la versión vieja de la caché.
+      registerType: 'prompt',
       includeAssets: ['logo.svg', 'favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
         name: 'Comedor Gisel',

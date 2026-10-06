@@ -4,6 +4,7 @@ import { isFirebaseConfigured } from './lib/firebase'
 import SetupScreen from './components/SetupScreen'
 import LoginScreen from './components/LoginScreen'
 import AppShell from './components/AppShell'
+import UpdatePrompt from './components/UpdatePrompt'
 import { FullScreenLoader } from './components/Loader'
 
 export default function App() {
@@ -12,6 +13,8 @@ export default function App() {
       <AuthProvider>
         <Root />
       </AuthProvider>
+      {/* Fuera del login: el aviso de versión nueva debe verse en cualquier pantalla */}
+      <UpdatePrompt />
     </ToastProvider>
   )
 }
