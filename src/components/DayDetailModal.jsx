@@ -1,10 +1,18 @@
 import { useState } from 'react'
 import { Save, StickyNote } from 'lucide-react'
 import { formatLongDate } from '../lib/dates'
-import { STATUS } from '../lib/meals'
+import { STATUS, STATUS_META } from '../lib/meals'
 import { useToast } from '../context/ToastContext'
 import Modal from './Modal'
 import StatusPicker from './StatusPicker'
+
+// Color del estado actual, el mismo relleno del calendario (un color por estado).
+const CURRENT_CHIP = {
+  [STATUS.HOME]: 'bg-home-500',
+  [STATUS.SCHOOL]: 'bg-school-500',
+  [STATUS.ABSENT]: 'bg-absent-500',
+  [STATUS.NO_CLASS]: 'bg-noclass-600',
+}
 
 /** Detalle de un día: estado + nota opcional (p. ej. qué llevó de comer) + pagado */
 export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }) {
@@ -33,7 +41,20 @@ export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }
         </p>
       )}
 
-      <p className="mb-2 text-xs font-semibold text-ink-700 dark:text-white/45">Estado</p>
+      {/* Estado actual, dicho con palabras: así no hay que deducirlo del color.
+          Ninguna opción se pinta cuando el día no tiene estado. */}
+      <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-ink-700 dark:text-white/45">
+        <span>Estado actual:</span>
+        {meal?.status ? (
+          <span className={`rounded-full px-2 py-0.5 text-white ${CURRENT_CHIP[meal.status]}`}>
+            {STATUS_META[meal.status].label}
+          </span>
+        ) : (
+          <span className="rounded-full border border-dashed border-surface-300 px-2 py-0.5 text-ink-700 dark:border-white/20 dark:text-white/45">
+            sin marcar
+          </span>
+        )}
+      </p>
       <StatusPicker value={statusDraft} onChange={setStatusDraft} price={price} />
 
       {isSchool && (

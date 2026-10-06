@@ -12,8 +12,13 @@ const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 /** Aplicar un estado a un rango de días hábiles de corrido */
 export default function RangeModal({ from, to, count, price, meals, onClose, onApply, onMarkPaidRange }) {
   const toast = useToast()
-  const [statusDraft, setStatusDraft] = useState(STATUS.HOME)
+  // OJO: null significa "borrar el estado del día", así que NO puede ser el
+  // valor inicial. `undefined` = "todavía no eliges nada"; sin esto, el botón
+  // de aplicar podría limpiar días sin que lo pidieras.
+  // Antes venía "Comida de casa" pintado de fábrica y parecía ya decidido.
+  const [statusDraft, setStatusDraft] = useState(undefined)
   const [busy, setBusy] = useState(null) // 'status' | 'paid' | 'unpaid' | null
+  const hasStatus = statusDraft !== undefined
 
   // Días de COMEDOR dentro del rango: solo esos se pueden marcar como pagados
   const schoolInRange = useMemo(() => {
@@ -27,6 +32,7 @@ export default function RangeModal({ from, to, count, price, meals, onClose, onA
   const paidInRange = schoolInRange.filter((k) => meals[k]?.paid)
 
   async function handleApplyStatus() {
+    if (!hasStatus) return
     setBusy('status')
     const res = await onApply(from, to, { status: statusDraft })
     setBusy(null)
@@ -103,7 +109,14 @@ export default function RangeModal({ from, to, count, price, meals, onClose, onA
       )}
 
       {/* ---------- Estado del rango ---------- */}
-      <p className="mb-2 text-xs font-semibold text-ink-700 dark:text-white/45">Estado para todo el rango</p>
+      <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-ink-700 dark:text-white/45">
+        <span>Estado para todo el rango</span>
+        {!hasStatus && (
+          <span className="rounded-full border border-dashed border-surface-300 px-2 py-0.5 font-normal text-ink-700 dark:border-white/20 dark:text-white/45">
+            elige uno
+          </span>
+        )}
+      </p>
       <StatusPicker value={statusDraft} onChange={setStatusDraft} price={price} />
 
       <p className="mt-3 text-xs text-ink-700/80 dark:text-white/35">
@@ -122,8 +135,8 @@ export default function RangeModal({ from, to, count, price, meals, onClose, onA
         <button
           type="button"
           onClick={handleApplyStatus}
-          disabled={!!busy}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95 disabled:opacity-60"
+          disabled={!!busy || !hasStatus}
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {busy === 'status' ? (
             <>
