@@ -164,12 +164,14 @@ body {
 
 /* ---------- Fila de KPIs ----------
    Las tarjetas son el resumen, no el protagonista: se compactan para ceder
-   espacio y peso visual al calendario, que es donde se trabaja. */
+   espacio y peso visual al calendario, que es donde se trabaja.
+   En MÓVIL van en dos líneas (total+pagados / los 4 estados) para que cada
+   etiqueta quepa completa: en una sola línea las 6 tarjetas se cortaban. */
 .kpi-strip {
-  height: 76px;
+  grid-auto-rows: minmax(56px, auto);
 }
 @media (max-height: 700px) {
-  .kpi-strip { height: 62px; }
+  .kpi-strip { grid-auto-rows: minmax(48px, auto); }
 }
 @media (min-width: 1024px) {
   .kpi-strip {

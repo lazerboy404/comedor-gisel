@@ -4,14 +4,14 @@ import { formatMoney } from '../lib/format'
 function SkeletonCards() {
   return (
     <div
-      className="kpi-strip grid shrink-0 grid-cols-[minmax(0,1.3fr)_repeat(5,minmax(0,1fr))] gap-2 lg:grid-cols-2 lg:gap-2.5"
+      className="kpi-strip grid shrink-0 grid-cols-4 gap-1.5 lg:grid-cols-2 lg:gap-2.5"
       aria-hidden="true"
     >
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <div
-          key={i}
-          className={`animate-pulse rounded-2xl bg-surface-200 dark:bg-white/10 ${i === 0 || i === 5 ? 'lg:col-span-2' : ''}`}
-        />
+      {/* Fila 1 (total + pagados) y fila 2 (los 4 estados) */}
+      <div className="col-span-3 animate-pulse rounded-2xl bg-surface-200 dark:bg-white/10 lg:col-span-2" />
+      <div className="animate-pulse rounded-2xl bg-surface-200 dark:bg-white/10 lg:col-span-2" />
+      {[0, 1, 2, 3].map((i) => (
+        <div key={i} className="animate-pulse rounded-2xl bg-surface-200 dark:bg-white/10" />
       ))}
     </div>
   )
@@ -31,44 +31,18 @@ const MINIS = [
   { key: 'home', label: 'Comida de casa', icon: Home, fill: 'bg-home-500' },
   { key: 'absent', label: 'Ausencia', icon: CalendarX2, fill: 'bg-absent-500' },
   { key: 'noClass', label: 'Sin clases', icon: CalendarOff, fill: 'bg-noclass-600' },
-  /*
-   * Días ya pagados. Se queda con el MISMO ocre de Comedor a propósito: un día
-   * pagado es un día de comedor, y así no entra un sexto color a la pantalla.
-   * La distinción la da el billete en círculo blanco, igual que la marca de la
-   * celda del calendario. Va a lo ancho, arriba del botón de liquidar.
-   */
-  { key: 'paid', label: 'Pagados', icon: Banknote, fill: 'bg-school-500', badge: true, wide: true },
 ]
 
-/** Fila compacta de KPIs: total a pagar + 4 estados del mes + días pagados.
- *  En móvil van los 6 en fila; en escritorio el total y los pagados a lo ancho. */
-export default function SummaryCards({ stats, price, loading }) {
-  if (loading) return <SkeletonCards />
-
-  const { schoolPending, schoolPaid, home, absent, noClass, pendingTotal, paidTotal } = stats
-  const alDia = schoolPending === 0
-  const values = { school: schoolPending, home, absent, noClass, paid: schoolPaid }
-
-  const sub = alDia
-    ? schoolPaid > 0
-      ? `${schoolPaid} ${schoolPaid === 1 ? 'día liquidado' : 'días liquidados'} (${formatMoney(paidTotal)})`
-      : 'Sin pendientes este mes'
-    : `${schoolPending} × ${formatMoney(price)}${schoolPaid > 0 ? ` · ${schoolPaid} pag.` : ''}`
-
+/** Tarjetas de resumen dentro de la fila 1 del móvil (van juntas y compactas).
+ *  Cada una: etiqueta con ícono arriba, número grande, subtexto. */
+function WideCard({ alDia, pendingTotal, sub, schoolPaid }) {
+  const fill = alDia ? 'border-home-600 bg-home-500' : 'border-brand-600 bg-brand-500'
+  const Icon = alDia ? Banknote : Wallet
   return (
-    <div className="kpi-strip grid shrink-0 grid-cols-[minmax(0,1.3fr)_repeat(5,minmax(0,1fr))] gap-2 lg:grid-cols-2 lg:gap-2.5">
-      {/* Total a pagar (o al día): mismo tratamiento que las demás, un poco más grande */}
-      <div
-        className={`animate-fade-in flex min-w-0 flex-col justify-center overflow-hidden rounded-2xl border p-3 text-white shadow-sm lg:col-span-2 lg:p-4 ${
-          alDia ? 'border-home-600 bg-home-500' : 'border-brand-600 bg-brand-500'
-        }`}
-      >
+    <>
+      <div className={`animate-fade-in col-span-3 flex min-w-0 flex-col justify-center overflow-hidden rounded-2xl border p-2.5 text-white shadow-sm lg:col-span-2 lg:p-4 ${fill}`}>
         <div className="flex items-center gap-1.5">
-          {alDia ? (
-            <Banknote className="size-3.5 shrink-0 lg:size-4" />
-          ) : (
-            <Wallet className="size-3.5 shrink-0 lg:size-4" />
-          )}
+          <Icon className="size-3.5 shrink-0 lg:size-4" />
           <p className="truncate text-[10px] font-bold uppercase tracking-wide lg:text-xs">
             {alDia ? 'Al día' : 'Total a pagar'}
           </p>
@@ -79,22 +53,50 @@ export default function SummaryCards({ stats, price, loading }) {
         <p className="truncate text-[10px] leading-tight text-white/85 lg:text-xs">{sub}</p>
       </div>
 
-      {/* Indicadores rápidos: mismo relleno que la celda del calendario.
-          En escritorio crecen para llenar la columna. */}
+      {/* Días ya pagados: mismo ocre de Comedor (un día pagado ES un día de
+          comedor, no entra un color nuevo). El billete es la señal de pago. */}
+      <div className="flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-white/15 bg-school-500 p-1.5 text-white shadow-sm lg:col-span-2 lg:gap-1.5 lg:p-3">
+        <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-white text-school-600 lg:size-6">
+          <Banknote className="size-2.5 lg:size-4" strokeWidth={2.5} />
+        </span>
+        <p className="kpi-num text-xl font-extrabold leading-none tabular-nums lg:text-4xl">{schoolPaid}</p>
+        <p className="w-full truncate text-center text-[9px] font-semibold uppercase tracking-wide text-white/85 lg:text-xs">
+          Pagados
+        </p>
+      </div>
+    </>
+  )
+}
+
+/** Fila de resumen: total a pagar + días pagados (fila 1) y los 4 estados (fila 2).
+ *  En móvil son 2 líneas para que cada etiqueta quepa completa; en escritorio el
+ *  total va arriba a lo ancho y los estados se reparten en 2x2. */
+export default function SummaryCards({ stats, price, loading }) {
+  if (loading) return <SkeletonCards />
+
+  const { schoolPending, schoolPaid, home, absent, noClass, pendingTotal, paidTotal } = stats
+  const alDia = schoolPending === 0
+  const values = { school: schoolPending, home, absent, noClass }
+
+  const sub = alDia
+    ? schoolPaid > 0
+      ? `${schoolPaid} ${schoolPaid === 1 ? 'día liquidado' : 'días liquidados'} (${formatMoney(paidTotal)})`
+      : 'Sin pendientes este mes'
+    : `${schoolPending} × ${formatMoney(price)}`
+
+  return (
+    <div className="kpi-strip grid shrink-0 grid-cols-4 gap-1.5 lg:grid-cols-2 lg:gap-2.5">
+      <WideCard alDia={alDia} pendingTotal={pendingTotal} sub={sub} schoolPaid={schoolPaid} />
+
+      {/* Estados: mismo relleno que la celda del calendario */}
       {MINIS.map((m) => (
         <div
           key={m.key}
-          className={`flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-white/15 p-1.5 text-white shadow-sm lg:gap-1.5 lg:p-3 ${m.wide ? 'lg:col-span-2' : ''} ${m.fill}`}
+          className={`flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-white/15 p-1.5 text-white shadow-sm lg:gap-1.5 lg:p-3 ${m.fill}`}
         >
-          {m.badge ? (
-            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-white text-school-600 lg:size-6">
-              <m.icon className="size-2.5 lg:size-4" strokeWidth={2.5} />
-            </span>
-          ) : (
-            <m.icon className="kpi-icon size-3.5 shrink-0 lg:size-6" />
-          )}
+          <m.icon className="kpi-icon size-3.5 shrink-0 lg:size-6" />
           <p className="kpi-num text-xl font-extrabold leading-none tabular-nums lg:text-4xl">{values[m.key]}</p>
-          <p className="w-full truncate text-center text-[9px] font-semibold uppercase tracking-wide text-white/85 lg:text-xs">
+          <p className="w-full text-center text-[9px] font-semibold uppercase leading-[1.15] tracking-wide text-white/85 lg:truncate lg:text-xs">
             {m.label}
           </p>
         </div>
