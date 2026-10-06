@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Save, StickyNote } from 'lucide-react'
+import { Banknote, Save, StickyNote } from 'lucide-react'
 import { formatLongDate } from '../lib/dates'
 import { STATUS, STATUS_META } from '../lib/meals'
 import { useToast } from '../context/ToastContext'
@@ -36,7 +36,8 @@ export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }
   return (
     <Modal open onClose={onClose} title={formatLongDate(dateKey)}>
       {paid && (
-        <p className="mb-3 rounded-xl bg-home-100 px-3 py-2 text-xs font-medium text-home-800 dark:bg-home-900 dark:text-home-100">
+        <p className="mb-3 flex items-center gap-1.5 rounded-xl border border-school-200 bg-school-50 px-3 py-2 text-xs font-medium text-school-800 dark:border-school-800 dark:bg-school-950 dark:text-school-200">
+          <Banknote className="size-3.5 shrink-0" />
           Este día ya fue liquidado (pagado).
         </p>
       )}
@@ -58,34 +59,38 @@ export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }
       <StatusPicker value={statusDraft} onChange={setStatusDraft} price={price} />
 
       {isSchool && (
-        <button
-          type="button"
-          role="switch"
-          aria-checked={paidDraft}
-          onClick={() => setPaidDraft((p) => !p)}
-          className={`mt-3 flex w-full items-center justify-between gap-3 rounded-2xl border px-3.5 py-3 transition-all active:scale-[0.98] ${
-            paidDraft
-              ? 'border-home-600 bg-home-500 dark:border-home-500 dark:bg-home-600'
-              : 'border-surface-200 bg-white dark:border-white/10 dark:bg-night-900'
-          }`}
-        >
-          <span className="text-left">
-            <span className="block text-sm font-semibold">Ya lo pagaste</span>
-            <span
-              className={`block text-[11px] ${paidDraft ? 'text-home-800 dark:text-home-50' : 'text-ink-700 dark:text-white/45'}`}
-            >
-              {paidDraft ? 'No sumará al total a pagar' : 'Sigue sumando al total a pagar'}
+        <div className="mt-3 overflow-hidden rounded-2xl border border-school-300 bg-school-100 dark:border-school-800 dark:bg-school-950">
+          <div className="flex items-center gap-2 border-b border-school-200 px-3.5 py-2 dark:border-school-800/60">
+            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-school-700 text-white dark:bg-white dark:text-school-800">
+              <Banknote className="size-3" strokeWidth={2.5} />
             </span>
-          </span>
-          <span
-            aria-hidden="true"
-            className={`flex h-6 w-11 shrink-0 items-center rounded-full px-0.5 transition-colors ${
-              paidDraft ? 'justify-end bg-white/80' : 'justify-start bg-surface-300 dark:bg-white/20'
-            }`}
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-school-800 dark:text-school-200">
+              Pago de este día
+            </span>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={paidDraft}
+            onClick={() => setPaidDraft((p) => !p)}
+            className="flex w-full items-center justify-between gap-3 px-3.5 py-3 text-left transition-all active:scale-[0.99]"
           >
-            <span className="size-5 rounded-full bg-white shadow" />
-          </span>
-        </button>
+            <span>
+              <span className="block text-sm font-semibold text-school-800 dark:text-school-100">Ya lo pagaste</span>
+              <span className="block text-[11px] text-school-800/70 dark:text-school-200/70">
+                {paidDraft ? 'No sumará al total a pagar' : 'Sigue sumando al total a pagar'}
+              </span>
+            </span>
+            <span
+              aria-hidden="true"
+              className={`flex h-6 w-11 shrink-0 items-center rounded-full px-0.5 transition-colors ${
+                paidDraft ? 'justify-end bg-school-500' : 'justify-start bg-school-200 dark:bg-school-800'
+              }`}
+            >
+              <span className="size-5 rounded-full bg-white shadow" />
+            </span>
+          </button>
+        </div>
       )}
 
       <label

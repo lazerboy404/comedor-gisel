@@ -9,11 +9,15 @@ const BASE =
  * Un día hábil (L-V) del calendario. El calendario es el protagonista de la
  * pantalla: relleno SÓLIDO y opaco del color del estado + tinta blanca.
  *
- * Contraste de la tinta blanca sobre cada relleno (>= 4.5:1):
- *   home-500   #35705f  5.78:1
- *   school-500 #7d6214  5.79:1
- *   absent-500 #a33a3a  6.51:1
- *   noclass-600 #4b5563 7.56:1
+ * Contraste de la tinta sobre cada relleno (>= 4.5:1):
+ *   home-500   #35705f  5.78:1  (blanco)
+ *   school-500 #7d6214  5.79:1  (blanco, día por pagar)
+ *   absent-500 #a33a3a  6.51:1  (blanco)
+ *   noclass-600 #4b5563 7.56:1  (blanco)
+ *
+ * Día de comedor YA PAGADO: va en tono tenue (school-100 con texto school-800)
+ * y al 75% de opacidad, como "inhabilitado": está resuelto y no debe competir
+ * con los días que siguen pendientes. El billete sigue marcando el pago.
  *
  * El estado no depende solo del color: cada uno lleva su propio ÍCONO y
  * "Sin clases" usa además borde discontinuo.
@@ -43,10 +47,12 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
     status === STATUS.HOME
       ? 'border-home-600 bg-home-500 text-white'
       : status === STATUS.SCHOOL
-        // El día pagado conserva EXACTAMENTE el mismo color: lo único que
-        // cambia es el billete de la esquina. Oscurecerlo confundía, porque
-        // un día de comedor pagado seguía siendo comida en el comedor.
-        ? 'border-school-600 bg-school-500 text-white'
+        // Ya pagado: tono TENUE, como inhabilitado. Está resuelto y no debe
+        // competir con los días que siguen pendientes de pago. El billete
+        // sigue siendo la señal de que se pagó.
+        ? paid
+          ? 'border-school-300 bg-school-100 text-school-800 opacity-80 dark:border-school-800 dark:bg-school-950 dark:text-school-200'
+          : 'border-school-600 bg-school-500 text-white'
         : status === STATUS.ABSENT
           ? 'border-absent-600 bg-absent-500 text-white'
           : status === STATUS.NO_CLASS
@@ -99,7 +105,9 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
         <span
           title="Pagado"
           aria-label="Pagado"
-          className="absolute right-0.5 top-0.5 flex size-3.5 items-center justify-center rounded-full bg-white text-school-700 shadow-sm lg:right-1 lg:top-1 lg:size-5"
+          // Nota: la opacidad del día (opacity-80) también atenúa este billete;
+          // un hijo no puede revertirla. Se acepta: sigue siendo distinguible.
+          className="absolute right-0.5 top-0.5 flex size-3.5 items-center justify-center rounded-full bg-school-800 text-white shadow-sm lg:right-1 lg:top-1 lg:size-5 dark:bg-white dark:text-school-900"
         >
           <Banknote className="size-2 lg:size-3" strokeWidth={2.5} />
         </span>

@@ -137,8 +137,8 @@ export default function MonthCalendar({ month }) {
               Sin clases
             </span>
             <span className="flex items-center gap-1">
-              <span className="flex size-2.5 items-center justify-center rounded-full bg-white ring-1 ring-surface-400">
-                <Banknote className="size-1.5 text-school-600" />
+              <span className="relative flex size-3 items-center justify-center rounded-[3px] border border-school-300 bg-school-100 dark:border-school-800 dark:bg-school-950">
+                <Banknote className="size-2 text-school-700 dark:text-school-200" />
               </span>
               Pagado
             </span>

@@ -53,14 +53,14 @@ function WideCard({ alDia, pendingTotal, sub, schoolPaid }) {
         <p className="truncate text-[10px] leading-tight text-white/85 lg:text-xs">{sub}</p>
       </div>
 
-      {/* Días ya pagados: mismo ocre de Comedor (un día pagado ES un día de
-          comedor, no entra un color nuevo). El billete es la señal de pago. */}
-      <div className="flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-white/15 bg-school-500 p-1.5 text-white shadow-sm lg:col-span-2 lg:gap-1.5 lg:p-3">
-        <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-white text-school-600 lg:size-6">
+      {/* Días ya pagados: tono TENUE, como inhabilitado. Está resuelto y no
+          compite con lo que sigue pendiente. El billete es la señal de pago. */}
+      <div className="flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-school-300 bg-school-100 p-1.5 text-school-800 opacity-80 shadow-sm dark:border-school-800 dark:bg-school-950 dark:text-school-200 lg:col-span-2 lg:gap-1.5 lg:p-3">
+        <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-white text-school-700 lg:size-6 dark:bg-school-900 dark:text-school-200">
           <Banknote className="size-2.5 lg:size-4" strokeWidth={2.5} />
         </span>
         <p className="kpi-num text-xl font-extrabold leading-none tabular-nums lg:text-4xl">{schoolPaid}</p>
-        <p className="w-full truncate text-center text-[9px] font-semibold uppercase tracking-wide text-white/85 lg:text-xs">
+        <p className="w-full truncate text-center text-[9px] font-semibold uppercase tracking-wide opacity-75 lg:text-xs">
           Pagados
         </p>
       </div>
