@@ -1,5 +1,5 @@
-import { Banknote, CalendarOff, StickyNote } from 'lucide-react'
-import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
+import { Banknote, CalendarOff, Home, StickyNote, UtensilsCrossed } from 'lucide-react'
+import { CryingFace } from './StatusIcons'
 import { formatLongDate, isToday, isWeekend, toKey } from '../lib/dates'
 import { STATUS, STATUS_META } from '../lib/meals'
 
@@ -64,9 +64,9 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
 
   const Icon =
     status === STATUS.HOME
-      ? HomeMeal
+      ? Home
       : status === STATUS.SCHOOL
-        ? SchoolMeal
+        ? UtensilsCrossed
         : status === STATUS.ABSENT
           ? CryingFace
           : status === STATUS.NO_CLASS
@@ -101,9 +101,7 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
       <span className={today ? 'font-extrabold underline decoration-2 underline-offset-[3px]' : undefined}>
         {date.getDate()}
       </span>
-      {/* El icono compuesto es más ancho que alto: fijar solo el alto (h-*) y
-            dejar que el ancho siga la proporción, o se deformaría. */}
-        {Icon && <Icon className="h-3.5 w-auto opacity-95 lg:h-4" />}
+      {Icon && <Icon className="size-3.5 opacity-95 lg:size-4" />}
       {paid && (
         <span
           title="Pagado"

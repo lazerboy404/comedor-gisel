@@ -1,5 +1,5 @@
-import { Banknote, CalendarOff, Wallet } from 'lucide-react'
-import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
+import { Banknote, CalendarOff, Home, UtensilsCrossed, Wallet } from 'lucide-react'
+import { CryingFace } from './StatusIcons'
 import { formatMoney } from '../lib/format'
 
 function SkeletonCards() {
@@ -28,8 +28,8 @@ function SkeletonCards() {
  * Texto blanco sobre el relleno: 5.78 - 7.56:1 en los cuatro estados.
  */
 const MINIS = [
-  { key: 'school', label: 'Comedor', icon: SchoolMeal, fill: 'bg-school-500' },
-  { key: 'home', label: 'Comida de casa', icon: HomeMeal, fill: 'bg-home-500' },
+  { key: 'school', label: 'Comedor', icon: UtensilsCrossed, fill: 'bg-school-500' },
+  { key: 'home', label: 'Comida de casa', icon: Home, fill: 'bg-home-500' },
   { key: 'absent', label: 'Ausencia', icon: CryingFace, fill: 'bg-absent-500' },
   { key: 'noClass', label: 'Sin clases', icon: CalendarOff, fill: 'bg-noclass-600' },
 ]
@@ -95,10 +95,7 @@ export default function SummaryCards({ stats, price, loading }) {
           key={m.key}
           className={`flex min-w-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-2xl border border-white/15 p-1.5 text-white shadow-sm lg:gap-1.5 lg:p-3 ${m.fill}`}
         >
-          {/* h-* con w-auto: el icono compuesto es ancho (casa+cubiertos) y con
-              un cuadrado fijo se deformaría. Los cuadrados (CalendarOff) no
-              se afectan porque su viewBox es 1:1. */}
-          <m.icon className="kpi-icon h-3.5 w-auto shrink-0 lg:h-5" />
+          <m.icon className="kpi-icon size-3.5 shrink-0 lg:size-6" />
           <p className="kpi-num text-xl font-extrabold leading-none tabular-nums lg:text-4xl">{values[m.key]}</p>
           <p className="w-full text-center text-[9px] font-semibold uppercase leading-[1.15] tracking-wide text-white/85 lg:truncate lg:text-xs">
             {m.label}

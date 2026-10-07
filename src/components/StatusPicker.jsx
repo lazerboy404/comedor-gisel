@@ -1,11 +1,11 @@
-import { CalendarOff, CircleSlash } from 'lucide-react'
-import { CryingFace, HomeMeal, SchoolMeal } from './StatusIcons'
+import { CalendarOff, CircleSlash, Home, UtensilsCrossed } from 'lucide-react'
+import { CryingFace } from './StatusIcons'
 import { formatMoney } from '../lib/format'
 import { STATUS } from '../lib/meals'
 
 const OPTIONS = [
-  { value: STATUS.HOME, label: 'Comida de casa', sub: 'Sin costo ($0)', icon: HomeMeal },
-  { value: STATUS.SCHOOL, label: 'Comedor', sub: 'Come en la escuela', icon: SchoolMeal },
+  { value: STATUS.HOME, label: 'Comida de casa', sub: 'Sin costo ($0)', icon: Home },
+  { value: STATUS.SCHOOL, label: 'Comedor', sub: 'Come en la escuela', icon: UtensilsCrossed },
   { value: STATUS.ABSENT, label: 'Ausencia', sub: 'No aplica', icon: CryingFace },
   { value: STATUS.NO_CLASS, label: 'No hubo clases', sub: 'Festivo o suspensión', icon: CalendarOff },
   { value: null, label: 'Sin marca', sub: 'Borra el estado del día', icon: CircleSlash, action: true },
@@ -52,11 +52,7 @@ export default function StatusPicker({ value = null, onChange, price }) {
               wide ? 'col-span-2' : ''
             } ${stateClass}`}
           >
-            {/* Contenedor cuadrado con el icono centrado: los compuestos son anchos y
-                no deben estirar la tarjeta ni deformarse. */}
-            <span className="flex h-5 items-center justify-center">
-              <o.icon className="h-4 w-auto" />
-            </span>
+            <o.icon className="size-5" />
             <span className="text-center text-sm font-semibold leading-tight">{o.label}</span>
             <span className={`text-[11px] ${active ? 'text-white/85' : 'opacity-80'}`}>
               {o.value === STATUS.SCHOOL ? `${o.sub} · ${formatMoney(price)}` : o.sub}
