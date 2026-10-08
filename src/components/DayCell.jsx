@@ -56,17 +56,17 @@ export default function DayCell({ date, meal, onOpenDetail, onDayPointerDown, in
 
   const stateClass =
     status === STATUS.HOME
-      ? 'border-home-600 bg-home-500 text-white dark:border-transparent dark:bg-vivid-home dark:text-cell-ink'
+      ? 'border-dashed border-cell-ink/25 bg-vivid-home text-cell-ink'
       : status === STATUS.SCHOOL
         // Ya pagado: en claro, tenue. En oscuro, panel elevado + punto lima.
         ? paid
           ? 'border-school-300 bg-school-100 text-school-800 opacity-80 dark:border-night-700 dark:bg-night-800 dark:text-nightink-500 dark:opacity-100'
-          : 'border-school-600 bg-school-500 text-white dark:border-transparent dark:bg-vivid-school dark:text-cell-ink'
+          : 'border-transparent bg-vivid-school text-cell-ink'
         : status === STATUS.ABSENT
-          ? 'border-absent-600 bg-absent-500 text-white dark:border-transparent dark:bg-vivid-absent dark:text-cell-ink'
+          ? 'border-transparent bg-vivid-absent text-cell-ink'
           : status === STATUS.NO_CLASS
             // Sin clases: relleno neutro sólido + borde discontinuo (forma, no sólo color)
-            ? 'border-dashed border-noclass-400 bg-noclass-600 text-white dark:border-transparent dark:border-dashed dark:bg-vivid-noclass dark:text-cell-ink'
+            ? 'border-dashed border-cell-ink/25 bg-vivid-noclass text-cell-ink'
             // Sin marcar: neutro, sin color (no compite con los estados)
             : 'border-surface-200 bg-white text-ink-700/70 hover:border-brand-300 hover:bg-brand-50 dark:border-night-700 dark:bg-night-900 dark:text-nightink-500 dark:hover:border-lima-400/40 dark:hover:bg-night-800'
 

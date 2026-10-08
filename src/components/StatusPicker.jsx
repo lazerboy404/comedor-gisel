@@ -13,10 +13,10 @@ const OPTIONS = [
 
 // Estados activos: relleno sólido opaco con tinta blanca (contraste >= 4.5:1).
 const ACTIVE_CLASS = {
-  [STATUS.HOME]: 'border-home-600 bg-home-500 text-white shadow-sm',
-  [STATUS.SCHOOL]: 'border-school-600 bg-school-500 text-white shadow-sm',
-  [STATUS.ABSENT]: 'border-absent-600 bg-absent-500 text-white shadow-sm',
-  [STATUS.NO_CLASS]: 'border-noclass-400 bg-noclass-600 text-white shadow-sm',
+  [STATUS.HOME]: 'border-dashed border-cell-ink/25 bg-vivid-home text-cell-ink shadow-sm',
+  [STATUS.SCHOOL]: 'border-transparent bg-vivid-school text-cell-ink shadow-sm',
+  [STATUS.ABSENT]: 'border-transparent bg-vivid-absent text-cell-ink shadow-sm',
+  [STATUS.NO_CLASS]: 'border-dashed border-cell-ink/25 bg-vivid-noclass text-cell-ink shadow-sm',
 }
 
 const IDLE_CLASS =

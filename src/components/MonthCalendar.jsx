@@ -165,19 +165,19 @@ export default function MonthCalendar({ month }) {
               Sin marca
             </span>
             <span className="flex items-center gap-1">
-              <span className="size-2 rounded-[3px] bg-home-500" />
+              <span className="size-2 rounded-[3px] border border-dashed border-cell-ink/25 bg-vivid-home" />
               Comida de casa ($0)
             </span>
             <span className="flex items-center gap-1">
-              <span className="size-2 rounded-[3px] bg-school-500" />
+              <span className="size-2 rounded-[3px] bg-vivid-school" />
               Comedor ({formatMoney(price)})
             </span>
             <span className="flex items-center gap-1">
-              <span className="size-2 rounded-[3px] bg-absent-500" />
+              <span className="size-2 rounded-[3px] bg-vivid-absent" />
               Ausencia
             </span>
             <span className="flex items-center gap-1">
-              <span className="size-2 rounded-[3px] border border-dashed border-noclass-400 bg-noclass-600" />
+              <span className="size-2 rounded-[3px] border border-dashed border-cell-ink/25 bg-vivid-noclass" />
               Sin clases
             </span>
             <span className="flex items-center gap-1">

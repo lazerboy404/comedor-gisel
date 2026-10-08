@@ -38,11 +38,11 @@ import { MonthDonut, RecentDays, WeekBars } from './PanelCharts'
 /** Tarjeta de una cifra de estado. */
 function MiniStat({ label, value, sub, icon: Icon, tone }) {
   const skins = {
-    school: 'border-school-500 bg-school-500 dark:border-transparent dark:bg-vivid-school',
-    home: 'border-home-500 bg-home-500 dark:border-transparent dark:bg-vivid-home',
+    school: 'border-transparent bg-vivid-school',
+    home: 'border-dashed border-cell-ink/25 bg-vivid-home',
   }
   // Texto: blanco en claro; oscuro (tinta de celda) en oscuro sobre el vivo.
-  const ink = 'text-white dark:text-cell-ink'
+  const ink = 'text-cell-ink'
   return (
     <div className={`flex min-w-0 flex-col justify-center gap-0.5 rounded-2xl border p-2.5 ${skins[tone]}`}>
       <div className="flex items-center gap-1.5">
@@ -95,7 +95,7 @@ export default function Dashboard({ month, onMonthChange }) {
           <span
             className={`flex size-10 shrink-0 items-center justify-center rounded-2xl ${
               alDia
-                ? 'bg-home-100 text-home-600 dark:bg-vivid-home dark:text-cell-ink'
+                ? 'bg-vivid-home text-cell-ink'
                 : 'bg-brand-100 text-brand-600 dark:bg-lima-400 dark:text-lima-ink'
             }`}
           >

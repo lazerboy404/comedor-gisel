@@ -8,10 +8,10 @@ import StatusPicker from './StatusPicker'
 
 // Color del estado actual, el mismo relleno del calendario (un color por estado).
 const CURRENT_CHIP = {
-  [STATUS.HOME]: 'bg-home-500',
-  [STATUS.SCHOOL]: 'bg-school-500',
-  [STATUS.ABSENT]: 'bg-absent-500',
-  [STATUS.NO_CLASS]: 'bg-noclass-600',
+  [STATUS.HOME]: 'bg-vivid-home',
+  [STATUS.SCHOOL]: 'bg-vivid-school',
+  [STATUS.ABSENT]: 'bg-vivid-absent',
+  [STATUS.NO_CLASS]: 'bg-vivid-noclass',
 }
 
 /** Detalle de un día: estado + nota opcional (p. ej. qué llevó de comer) + pagado */
