@@ -52,14 +52,14 @@ export default function PriceConfig({ embedded = false }) {
               if (e.key === 'Enter') handleSave()
             }}
             placeholder="0.00"
-            className="w-full rounded-xl border border-surface-300 bg-white py-2.5 pl-7 pr-3 text-sm font-semibold tabular-nums outline-none transition-colors focus:border-brand-400 focus:ring-2 focus:ring-brand-400/25 dark:border-white/10 dark:bg-night-950"
+            className="w-full rounded-xl border border-surface-300 bg-white py-2.5 pl-7 pr-3 text-sm font-semibold tabular-nums outline-none transition-colors focus:border-brand-400 focus:ring-2 focus:ring-brand-400/25 dark:border-night-700 dark:bg-night-950 dark:focus:border-lima-400 dark:focus:ring-lima-400/25"
           />
         </div>
         <button
           type="button"
           onClick={handleSave}
           disabled={!dirty || !valid || saving}
-          className="flex items-center gap-2 rounded-xl bg-brand-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center gap-2 rounded-xl bg-brand-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-lima-400 dark:text-lima-ink dark:hover:bg-lima-300"
         >
           {saving ? <Spinner className="size-4" /> : <Save className="size-4" />}
           Guardar

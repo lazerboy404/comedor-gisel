@@ -99,7 +99,7 @@ export default function RangeModal({ from, to, count, price, meals, onClose, onA
               type="button"
               onClick={() => handleMarkPaid(false)}
               disabled={busy || paidInRange.length === 0}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-surface-300 px-3 py-2.5 text-sm font-semibold text-ink-800 transition-all hover:border-brand-400 hover:text-brand-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-white/70"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-surface-300 px-3 py-2.5 text-sm font-semibold text-ink-800 transition-all hover:border-brand-400 hover:text-brand-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 dark:border-night-600 dark:text-nightink-200 dark:hover:border-lima-400 dark:hover:text-lima-300"
             >
               {busy === 'unpaid' ? <Spinner className="size-4" /> : <Undo2 className="size-4" />}
               Deshacer
@@ -136,7 +136,7 @@ export default function RangeModal({ from, to, count, price, meals, onClose, onA
           type="button"
           onClick={handleApplyStatus}
           disabled={!!busy || !hasStatus}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-lima-400 dark:text-lima-ink dark:hover:bg-lima-300"
         >
           {busy === 'status' ? (
             <>

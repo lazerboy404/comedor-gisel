@@ -106,7 +106,7 @@ export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }
         value={noteDraft}
         onChange={(e) => setNoteDraft(e.target.value)}
         placeholder="Ej.: sándwich de pollo y fruta (opcional, solo lo ves tú)"
-        className="mt-1.5 w-full resize-none rounded-xl border border-surface-300 bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-brand-400 focus:ring-2 focus:ring-brand-400/25 dark:border-white/10 dark:bg-night-950"
+        className="mt-1.5 w-full resize-none rounded-xl border border-surface-300 bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-brand-400 focus:ring-2 focus:ring-brand-400/25 dark:border-night-700 dark:bg-night-950 dark:focus:border-lima-400 dark:focus:ring-lima-400/25"
       />
 
       <div className="mt-4 flex gap-2">
@@ -120,7 +120,7 @@ export default function DayDetailModal({ dateKey, meal, price, onClose, onSave }
         <button
           type="button"
           onClick={handleSave}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-white transition-all hover:bg-brand-500 active:scale-95 dark:bg-lima-400 dark:text-lima-ink dark:hover:bg-lima-300"
         >
           <Save className="size-4" />
           Guardar

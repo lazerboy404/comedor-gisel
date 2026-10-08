@@ -26,9 +26,9 @@ export default function UpdatePrompt() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-brand-300 bg-white p-3 shadow-2xl animate-slide-up dark:border-brand-500/40 dark:bg-night-800"
+      className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-brand-300 bg-white p-3 shadow-2xl animate-slide-up dark:border-lima-400/40 dark:bg-night-800"
     >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-300">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-lima-400/15 dark:text-lima-300">
         <RefreshCw className="size-4.5" />
       </span>
 
@@ -42,7 +42,7 @@ export default function UpdatePrompt() {
       <button
         type="button"
         onClick={() => updateServiceWorker(true)}
-        className="shrink-0 rounded-xl bg-brand-400 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-brand-500 active:scale-95"
+        className="shrink-0 rounded-xl bg-brand-400 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-brand-500 active:scale-95 dark:bg-lima-400 dark:text-lima-ink dark:hover:bg-lima-300"
       >
         Recargar
       </button>

@@ -7,7 +7,7 @@ export function Spinner({ className = 'size-5' }) {
 export function FullScreenLoader({ label = 'Cargando…' }) {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-4 animate-fade-in">
-      <div className="flex size-16 items-center justify-center rounded-3xl bg-brand-400 text-white shadow-lg shadow-brand-400/25">
+      <div className="flex size-16 items-center justify-center rounded-3xl bg-brand-400 text-white shadow-lg shadow-brand-400/25 dark:bg-lima-400 dark:text-lima-ink dark:shadow-[0_18px_40px_-16px_rgba(199,224,122,0.45)]">
         <UtensilsCrossed className="size-8 animate-pulse" />
       </div>
       <p className="flex items-center gap-2 text-sm text-ink-700 dark:text-white/45">

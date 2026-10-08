@@ -4,7 +4,6 @@ import { MealsProvider } from '../context/MealsContext'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { startOfMonth } from '../lib/dates'
 import Header from './Header'
-import BottomNav from './BottomNav'
 import SyncStatus from './SyncStatus'
 import Dashboard from './Dashboard'
 import Report from './Report'
@@ -24,13 +23,15 @@ export default function AppShell() {
       <div className="flex h-dvh flex-col">
         <Header
           user={user}
+          tab={tab}
+          onTabChange={setTab}
           isDark={isDark}
           onToggleTheme={toggle}
           onLogout={logout}
           onOpenSettings={() => setSettingsOpen(true)}
         />
 
-        <main className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col overflow-y-auto overscroll-contain px-4 pt-3 lg:max-w-5xl lg:px-6 xl:max-w-6xl">
+        <main className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col overflow-y-auto overscroll-contain px-4 pt-3 lg:max-w-5xl lg:px-6 xl:max-w-6xl 2xl:max-w-[1680px] shell-cap">
           <SyncStatus />
           <div key={tab} className="flex min-h-0 flex-1 flex-col animate-fade-in">
             {tab === 'dashboard' && <Dashboard month={month} onMonthChange={setMonth} />}
@@ -38,7 +39,6 @@ export default function AppShell() {
           </div>
         </main>
 
-        <BottomNav tab={tab} onChange={setTab} />
 
         <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Ajustes">
           <PriceConfig embedded />

@@ -22,7 +22,7 @@ export default function SyncStatus() {
       {online && syncing && (
         <div
           role="status"
-          className="mb-3 flex shrink-0 items-center gap-2 rounded-xl bg-brand-100 px-3 py-2 text-xs font-medium text-brand-700 dark:bg-brand-400/30 dark:text-brand-200"
+          className="mb-3 flex shrink-0 items-center gap-2 rounded-xl bg-brand-100 px-3 py-2 text-xs font-medium text-brand-700 dark:bg-lima-400/15 dark:text-lima-300"
         >
           <RefreshCw className="size-3.5 shrink-0 animate-spin" />
           Guardando cambios en la nube…

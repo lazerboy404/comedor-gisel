@@ -11,34 +11,34 @@ import { SkeletonCalendar } from './Loader'
 const DRAG_THRESHOLD_PX = 8
 
 /**
- * Calendario con selección:
- * - Toque/clic (o clic derecho) en un día -> abre las opciones de ese día
- * - Mantener presionado y soltar -> lo mismo (opciones del día)
- * - Arrastrar sobre varios días -> selecciona un rango y abre las opciones del rango
+ * Calendario con selecciÃ³n:
+ * - Toque/clic (o clic derecho) en un dÃ­a -> abre las opciones de ese dÃ­a
+ * - Mantener presionado y soltar -> lo mismo (opciones del dÃ­a)
+ * - Arrastrar sobre varios dÃ­as -> selecciona un rango y abre las opciones del rango
  * - Arrastrar fuera del calendario y soltar -> cancela
  */
 export default function MonthCalendar({ month }) {
   const { meals, price, loading, setDayDetail, applyRange, markPaidRange } = useMealsData()
   const weeks = monthMatrix(month)
-  const [detailKey, setDetailKey] = useState(null) // opciones de UN día
+  const [detailKey, setDetailKey] = useState(null) // opciones de UN dÃ­a
   const [range, setRange] = useState(null) // opciones de un RANGO { from, to }
   const [highlight, setHighlight] = useState(null) // { from, to } mientras se arrastra
   const pressRef = useRef(null)
-  const ghostUntilRef = useRef(0) // hasta cuándo descartar el próximo clic
+  const ghostUntilRef = useRef(0) // hasta cuÃ¡ndo descartar el prÃ³ximo clic
 
   /*
    * El modal se abre al soltar el dedo (pointerup), pero el navegador emite un
-   * 'click' DESPUÉS, en (casi) las mismas coordenadas. Como el modal ya está
-   * montado encima, ese clic caía sobre un botón del modal: pintaba otro estado
-   * y, si caía en "Comida de casa", ocultaba el interruptor de pagado.
+   * 'click' DESPUÃ‰S, en (casi) las mismas coordenadas. Como el modal ya estÃ¡
+   * montado encima, ese clic caÃ­a sobre un botÃ³n del modal: pintaba otro estado
+   * y, si caÃ­a en "Comida de casa", ocultaba el interruptor de pagado.
    *
-   * Solo pasa con toque real (con ratón el click llega antes de montar el modal).
-   * Nota: NO se compara por posición. El navegador ajusta el punto del clic
-   * sintetizado al elemento tocable más cercano, así que puede caer a varios px
-   * (medido: 4-5 px, y más en pantallas reales) y una tolerancia fina lo deja
+   * Solo pasa con toque real (con ratÃ³n el click llega antes de montar el modal).
+   * Nota: NO se compara por posiciÃ³n. El navegador ajusta el punto del clic
+   * sintetizado al elemento tocable mÃ¡s cercano, asÃ­ que puede caer a varios px
+   * (medido: 4-5 px, y mÃ¡s en pantallas reales) y una tolerancia fina lo deja
    * pasar. Se descarta el SIGUIENTE clic, una sola vez, dentro de una ventana
-   * corta. Se arma solo para touch/pen, nunca para ratón, para no tragarse un
-   * clic legítimo en escritorio.
+   * corta. Se arma solo para touch/pen, nunca para ratÃ³n, para no tragarse un
+   * clic legÃ­timo en escritorio.
    */
   function armGhostGuard() {
     ghostUntilRef.current = Date.now() + 500
@@ -53,7 +53,7 @@ export default function MonthCalendar({ month }) {
       e.stopPropagation()
       e.preventDefault()
     }
-    // En captura: corre ANTES de que React vea el evento, así no llega al botón
+    // En captura: corre ANTES de que React vea el evento, asÃ­ no llega al botÃ³n
     document.addEventListener('click', onDocClick, true)
     return () => document.removeEventListener('click', onDocClick, true)
   }, [])
@@ -72,7 +72,7 @@ export default function MonthCalendar({ month }) {
       y: e.clientY,
       moved: false,
       hoverKey: null,
-      // Solo el toque sintetiza un clic tardío; con ratón el clic es legítimo
+      // Solo el toque sintetiza un clic tardÃ­o; con ratÃ³n el clic es legÃ­timo
       touch: e.pointerType === 'touch' || e.pointerType === 'pen',
     }
   }
@@ -99,10 +99,10 @@ export default function MonthCalendar({ month }) {
         p.moved ? !!(p.hoverKey && p.hoverKey !== p.key) : true
       if (opensModal && p.touch) armGhostGuard()
       if (p.moved) {
-        // arrastre: rango si terminó sobre otro día; fuera del calendario = cancelar
+        // arrastre: rango si terminÃ³ sobre otro dÃ­a; fuera del calendario = cancelar
         if (p.hoverKey && p.hoverKey !== p.key) setRange({ from: p.key, to: p.hoverKey })
       } else {
-        // toque/clic/mantener presionado sin mover: opciones del día
+        // toque/clic/mantener presionado sin mover: opciones del dÃ­a
         setDetailKey(p.key)
       }
     }
@@ -147,9 +147,9 @@ export default function MonthCalendar({ month }) {
             className="grid min-h-0 flex-1 grid-cols-7 gap-1.5 lg:gap-2.5"
             style={{ gridTemplateRows: `repeat(${weeks.length}, minmax(var(--cal-row), 1fr))` }}
           >
-            {weeks.flat().map((date) => (
+            {weeks.flat().map((date, i) => (
               <DayCell
-                key={date ? toKey(date) : 'blank'}
+                key={date ? toKey(date) : `blank-${i}`}
                 date={date}
                 meal={date ? meals[toKey(date)] : undefined}
                 onOpenDetail={setDetailKey}
@@ -187,7 +187,7 @@ export default function MonthCalendar({ month }) {
               Pagado
             </span>
             <span className="basis-full text-center text-ink-700/80 dark:text-white/35">
-              Toca un día para elegir · Arrastra varios para aplicar estado o marcar pagados
+              Toca un dÃ­a para elegir Â· Arrastra varios para aplicar estado o marcar pagados
             </span>
           </div>
         </div>
@@ -196,8 +196,8 @@ export default function MonthCalendar({ month }) {
       {/* Contador en vivo mientras se arrastra */}
       {dragCount > 0 && (
         <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 flex justify-center">
-          <span className="rounded-full bg-brand-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg">
-            {dragCount} {dragCount === 1 ? 'día hábil' : 'días hábiles'} seleccionados
+          <span className="rounded-full bg-brand-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg dark:bg-lima-400 dark:text-lima-ink dark:shadow-[0_6px_18px_-8px_rgba(199,224,122,0.5)]">
+            {dragCount} {dragCount === 1 ? 'dÃ­a hÃ¡bil' : 'dÃ­as hÃ¡biles'} seleccionados
           </span>
         </div>
       )}

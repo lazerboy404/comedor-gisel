@@ -33,12 +33,12 @@ export default function LoginScreen() {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center p-6">
       <div className="w-full max-w-sm text-center animate-slide-up">
-        <div className="mx-auto mb-5 flex size-20 items-center justify-center rounded-3xl bg-brand-400 text-white shadow-lg shadow-brand-400/30">
+        <div className="mx-auto mb-5 flex size-20 items-center justify-center rounded-3xl bg-brand-400 text-white shadow-lg shadow-brand-400/30 dark:bg-lima-400 dark:text-lima-ink dark:shadow-[0_18px_40px_-16px_rgba(199,224,122,0.45)]">
           <UtensilsCrossed className="size-10" />
         </div>
 
         <h1 className="text-3xl font-bold tracking-tight">Comedor Gisel</h1>
-        <p className="mt-2 text-sm text-ink-700 dark:text-white/50">
+        <p className="mt-2 text-sm text-ink-700 dark:text-nightink-400">
           Registro infalible de las comidas escolares: paga solo lo justo, con historial en la nube.
         </p>
 
@@ -46,7 +46,7 @@ export default function LoginScreen() {
           type="button"
           onClick={login}
           disabled={signingIn}
-          className="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl border border-surface-300 bg-white px-4 py-3.5 text-sm font-semibold text-ink-800 shadow-sm transition-all hover:bg-surface-50 active:scale-[0.98] disabled:opacity-60 dark:border-white/15 dark:bg-night-900 dark:text-white/80 dark:hover:bg-night-800"
+          className="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl border border-surface-300 bg-white px-4 py-3.5 text-sm font-semibold text-ink-800 shadow-sm transition-all hover:bg-surface-50 active:scale-[0.98] disabled:opacity-60 dark:border-night-700 dark:bg-night-900 dark:text-nightink-100 dark:hover:bg-night-800"
         >
           {signingIn ? <Spinner className="size-5" /> : <GoogleIcon />}
           {signingIn ? 'Abriendo sesión…' : 'Iniciar sesión con Google'}
@@ -69,7 +69,7 @@ export default function LoginScreen() {
           </div>
         )}
 
-        <p className="mt-6 text-xs text-ink-700/70 dark:text-white/30">
+        <p className="mt-6 text-xs text-ink-700/70 dark:text-nightink-500">
           Tus datos son privados: solo tu cuenta puede leerlos.
         </p>
       </div>

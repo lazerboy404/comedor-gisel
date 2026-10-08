@@ -7,7 +7,7 @@ export default function MonthNav({ month, onChange }) {
 
   return (
     <div className="flex shrink-0 items-center justify-between gap-2">
-      <h2 className="truncate text-lg font-bold tracking-tight">{monthTitle(month)}</h2>
+      <h2 className="truncate text-lg font-bold tracking-tight 2xl:text-2xl">{monthTitle(month)}</h2>
       <div className="flex shrink-0 items-center gap-1.5">
         {!isCurrent && (
           <button

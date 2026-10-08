@@ -7,7 +7,6 @@ import { useDarkMode } from '../src/hooks/useDarkMode'
 import { startOfMonth } from '../src/lib/dates'
 import { STATUS } from '../src/lib/meals'
 import Header from '../src/components/Header'
-import BottomNav from '../src/components/BottomNav'
 import SyncStatus from '../src/components/SyncStatus'
 import Dashboard from '../src/components/Dashboard'
 import Report from '../src/components/Report'
@@ -78,19 +77,20 @@ function Harness() {
       <div className="flex h-dvh flex-col">
         <Header
           user={FAKE_USER}
+          tab={tab}
+          onTabChange={setTab}
           isDark={isDark}
           onToggleTheme={() => {}}
           onLogout={() => {}}
           onOpenSettings={() => {}}
         />
-        <main className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col overflow-hidden px-4 pt-3 lg:max-w-5xl lg:px-6 xl:max-w-6xl">
+        <main className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col overflow-y-auto overscroll-contain px-4 pt-3 lg:max-w-5xl lg:px-6 xl:max-w-6xl 2xl:max-w-[1680px] shell-cap">
           <SyncStatus />
           <div key={tab} className="flex min-h-0 flex-1 flex-col animate-fade-in">
             {tab === 'dashboard' && <Dashboard month={month} onMonthChange={setMonth} />}
             {tab === 'report' && <Report month={month} onMonthChange={setMonth} />}
           </div>
         </main>
-        <BottomNav tab={tab} onChange={setTab} />
       </div>
     </FakeMeals>
   )
